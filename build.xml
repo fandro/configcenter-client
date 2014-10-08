@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="dist" basedir="." name="configcenter-bjf">
+
+ <property name="java.src" value="src/main/java" />
+ <property name="dist" value="dist" />
+ <property name="src.dest" value="dist/classes" />
+ <property name="jar.dest" value="dist/jar" />
+ <property name="source-encoding" value="UTF-8" />
+ <property name="lib.dir" value="./lib"/>
+ <property name="jarName" value="configcenter-bjf.jar"/>
+  
+   <!--编译java源文件所需的jar文件 -->
+ <path id="build-classpath">
+  <fileset dir="${lib.dir}">
+   <include name="*.jar" />
+  </fileset>
+ </path>
+ 
+ <!--清理-->
+ <target name="clean">
+  <delete dir="${dist}" />
+ </target>
+ 
+ <!-- 初始化，建立相关的文件夹-->
+ <target name="init" depends="clean">
+  <mkdir dir="${dist}"/>
+  <mkdir dir="${src.dest}"/>
+  <mkdir dir="${jar.dest}"/>
+ </target> 
+ 
+  <!-- 编译java源文件-->
+ <target name="compile" depends="init">
+  <javac srcdir="${java.src}" destdir="${src.dest}"
+   classpathref="build-classpath" encoding="${source-encoding}"
+   debug="true" debuglevel="source,lines,vars" >
+  </javac>
+ </target>
+ 
+ <!--打包-->
+ <target name="dist" depends="compile">
+  <jar jarfile="${jar.dest}/${jarName}" basedir="${src.dest}">
+  </jar>
+ </target>
+ 
+</project>

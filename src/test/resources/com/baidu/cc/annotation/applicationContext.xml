@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans 
+			http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context-2.5.xsd
+            http://www.springframework.org/schema/util 
+            http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+
+	<!-- annotation scan -->
+	<context:component-scan base-package="com.baidu.cc">
+	</context:component-scan>
+
+	<bean class="com.baidu.cc.spring.ConfigCenterPropertyPlaceholderConfigurer">
+		<property name="callbackInteval" value="500"></property>
+		<property name="ccServerUrl" value="http://localhost:8080/rpc/ConfigServerService"></property>
+		<property name="ccUser" value="user"></property>
+		<property name="ccPassword" value="password"></property>
+		<property name="ccVersion" value="1"></property>
+		<property name="ccEnvId" value="1"></property>
+		<property name="enableUpdateCallback" value="true"></property>
+		<property name="configServerService" ref="configServerServiceMocker"></property>
+	</bean>
+	
+	<bean id="configServerServiceMocker" class="com.baidu.cc.ConfigServerServiceMock"></bean>
+	
+	<bean
+		class="com.baidu.bjf.beans.context.annotation.CommonAnnotationBeanPostProcessor">
+		<property name="callback">
+			<bean
+				class="com.baidu.cc.annotation.ConfigChangeNotiferAnnotationParser">
+			</bean>
+		</property>
+	</bean>
+
+</beans>
